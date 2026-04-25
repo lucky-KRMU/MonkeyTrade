@@ -15,8 +15,8 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 font-[Inter]">
-      <div className="flex justify-between items-center">
-        <div>
+      <div className="flex flex-col gap-4 md:flex-row justify-between items-center">
+        <div className='text-center md:text-left'>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Order History</h2>
           <p className="text-slate-500 dark:text-slate-400">Track your trade executions and pending requests</p>
         </div>
@@ -40,8 +40,8 @@ export default function OrdersPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-x-scroll md:overflow-hidden">
+        <table className="w-full text-left ">
           <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 text-slate-400 text-sm">
             <tr>
               <th className="px-6 py-4">Date</th>
