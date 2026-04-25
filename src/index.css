@@ -1,6 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Add this to ensure the whole page background shifts color */
 @layer base {

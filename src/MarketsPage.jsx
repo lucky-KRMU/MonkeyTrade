@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, Activity, Globe, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 const gainers = [
   { symbol: 'NVDA', price: 485.30, change: 5.2 },
@@ -15,10 +15,10 @@ const losers = [
 
 export default function MarketsPage() {
   return (
-    <div className="space-y-6 animate-in fade-in duration-500 font-[Inter]">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div>
-        <h2 className="text-2xl font-bold text-slate-800">Markets</h2>
-        <p className="text-slate-500">Global market overview and top movers</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Markets</h2>
+        <p className="text-slate-500 dark:text-slate-400">Global market overview and top movers</p>
       </div>
 
       {/* 1. Market Indices */}
@@ -30,34 +30,36 @@ export default function MarketsPage() {
 
       {/* 2. Top Movers */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <h3 className="font-bold text-green-600 mb-4 flex items-center gap-2">
+        {/* Gainers Table */}
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h3 className="font-bold text-green-600 dark:text-green-400 mb-4 flex items-center gap-2">
             <TrendingUp size={20} /> Top Gainers
           </h3>
           <table className="w-full text-left text-sm">
-            <tbody>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {gainers.map((s) => (
-                <tr key={s.symbol} className="border-b border-slate-50 last:border-0">
-                  <td className="py-3 font-bold">{s.symbol}</td>
-                  <td className="py-3 text-slate-600">${s.price.toFixed(2)}</td>
-                  <td className="py-3 text-right text-green-600 font-bold">+{s.change}%</td>
+                <tr key={s.symbol}>
+                  <td className="py-3 font-bold text-slate-900 dark:text-white">{s.symbol}</td>
+                  <td className="py-3 text-slate-600 dark:text-slate-300">${s.price.toFixed(2)}</td>
+                  <td className="py-3 text-right text-green-600 dark:text-green-400 font-bold">+{s.change}%</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <h3 className="font-bold text-red-500 mb-4 flex items-center gap-2">
+        {/* Losers Table */}
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h3 className="font-bold text-red-500 dark:text-red-400 mb-4 flex items-center gap-2">
             <TrendingDown size={20} /> Top Losers
           </h3>
           <table className="w-full text-left text-sm">
-            <tbody>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {losers.map((s) => (
-                <tr key={s.symbol} className="border-b border-slate-50 last:border-0">
-                  <td className="py-3 font-bold">{s.symbol}</td>
-                  <td className="py-3 text-slate-600">${s.price.toFixed(2)}</td>
-                  <td className="py-3 text-right text-red-500 font-bold">{s.change}%</td>
+                <tr key={s.symbol}>
+                  <td className="py-3 font-bold text-slate-900 dark:text-white">{s.symbol}</td>
+                  <td className="py-3 text-slate-600 dark:text-slate-300">${s.price.toFixed(2)}</td>
+                  <td className="py-3 text-right text-red-500 dark:text-red-400 font-bold">{s.change}%</td>
                 </tr>
               ))}
             </tbody>
@@ -70,14 +72,14 @@ export default function MarketsPage() {
 
 function IndexCard({ name, value, change, positive }) {
   return (
-    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="flex justify-between items-start">
-        <span className="text-sm text-slate-500 font-medium">{name}</span>
-        <Activity size={16} className="text-slate-300" />
+        <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">{name}</span>
+        <Activity size={16} className="text-slate-300 dark:text-slate-600" />
       </div>
       <div className="mt-2">
-        <p className="text-2xl font-bold text-slate-900">{value}</p>
-        <span className={`text-sm font-medium flex items-center gap-1 ${positive ? 'text-green-600' : 'text-red-500'}`}>
+        <p className="text-2xl font-bold text-slate-900 dark:text-white">{value}</p>
+        <span className={`text-sm font-medium flex items-center gap-1 ${positive ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
           {positive ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />} {change}
         </span>
       </div>
