@@ -7,7 +7,8 @@ import OrdersPage from './OrdersPage';
 import MarketsPage from './MarketsPage';
 import SettingsPage from './SettingsPage';
 import { ThemeProvider } from './ThemeContext';
-import  ErrorBoundary  from './ErrorBoundry';
+import ErrorFallback from './ErrorBoundry';
+import { ErrorBoundary } from 'react-error-boundary';
 
 // function App() {
 //   return (
@@ -39,18 +40,22 @@ function App() {
         4. transition-colors: Makes the toggle feel smooth
       */}
       <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 font-[Inter]">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<DashboardLayout />}>
-              <Route index element={<DashboardPage />} errorElement={<ErrorBoundary />} />
-              <Route path="portfolio" element={<PortfolioPage />} errorElement={<ErrorBoundary />} />
-              <Route path="watchlist" element={<WatchlistPage />} errorElement={<ErrorBoundary />} />
-              <Route path="markets" element={<MarketsPage />} errorElement={<ErrorBoundary />} />
-              <Route path="orders" element={<OrdersPage />} errorElement={<ErrorBoundary />} />
-              <Route path='settings' element={<SettingsPage />} errorElement={<ErrorBoundary />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <ErrorBoundary fallback={<ErrorFallback/>}>
+
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<DashboardLayout />}>
+                <Route index element={<DashboardPage />} errorElement={<ErrorFallback />} />
+                <Route path="portfolio" element={<PortfolioPage />} errorElement={<ErrorFallback />} />
+                <Route path="watchlist" element={<WatchlistPage />} errorElement={<ErrorFallback />} />
+                <Route path="markets" element={<MarketsPage />} errorElement={<ErrorFallback />} />
+                <Route path="orders" element={<OrdersPage />} errorElement={<ErrorFallback />} />
+                <Route path='settings' element={<SettingsPage />} errorElement={<ErrorFallback />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+
+        </ErrorBoundary>
       </div>
     </ThemeProvider>
   );
