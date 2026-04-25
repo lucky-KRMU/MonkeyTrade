@@ -16,10 +16,10 @@ export default function Dashboard({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-slate-50 font-[Inter]">
       <aside className={`bg-slate-900 text-white w-64 shrink-0 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-64'} md:translate-x-0 fixed md:static h-full z-20`}>
         <div className="p-6 flex items-center justify-between">
-          <h1 className="text-xl font-bold tracking-wider text-orange-500 cursor-pointer">MONKEYTRADE</h1>
+          <h1 className="text-xl font-bold tracking-wider text-orange-500 cursor-pointer font-[Rubik]">MONKEY●TRADE</h1>
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden"><X size={20} /></button>
         </div>
 
