@@ -11,6 +11,7 @@ export default function DashboardPage() {
   // The context handles the "5-minute cache" logic internally.
   useEffect(() => {
     fetchHoldings();
+    document.title = "MonkeyTrade - Dashboard"
   }, []);
 
   // Show global loading state

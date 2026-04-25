@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Shield, Bell, Moon, Save, Mail, Lock } from 'lucide-react';
 import { useGlobalContext } from './ThemeContext'; // Ensure this matches your file path
 
 export default function SettingsPage() {
+  useEffect(()=>{
+    document.title = "MonkeyTrade - Settings"
+  }, [])
   const { theme, toggleTheme } = useGlobalContext();
   const [emailAlerts, setEmailAlerts] = useState(true);
 

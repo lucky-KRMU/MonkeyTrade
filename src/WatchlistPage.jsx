@@ -9,6 +9,7 @@ export default function WatchlistPage() {
     if (visibleWatchlist.length === 0) {
       loadMore();
     }
+    document.title = "MonkeyTrade - Watchlist"
   }, []);
 
   return (

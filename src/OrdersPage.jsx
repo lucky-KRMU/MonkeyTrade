@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const orderHistory = [
@@ -9,6 +9,9 @@ const orderHistory = [
 ];
 
 export default function OrdersPage() {
+  useEffect(()=>{
+    document.title = "MonkeyTrade - Orders"
+  },[])
   const [filter, setFilter] = useState('All');
 
   const filteredOrders = filter === 'All' ? orderHistory : orderHistory.filter(o => o.status === filter);

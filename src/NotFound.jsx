@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle } from 'lucide-react';
 
 export default function NotFoundPage() {
+    useEffect(()=>{
+        document.title = "MonkeyTrade - Not Found"
+    },[])
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 animate-in fade-in zoom-in duration-500">
       <div className="bg-orange-100 dark:bg-orange-900/20 p-4 rounded-full mb-6">

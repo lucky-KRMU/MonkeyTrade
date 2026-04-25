@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { PieChart, Briefcase, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
 const portfolioData = {
@@ -20,6 +20,9 @@ const holdings = [
 ];
 
 export default function PortfolioPage() {
+  useEffect(()=>{
+    document.title = "MonkeyTrade - Portfolio"
+  },[])
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       

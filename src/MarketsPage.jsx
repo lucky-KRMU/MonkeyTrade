@@ -7,6 +7,7 @@ export default function MarketsPage() {
 
   useEffect(() => {
     fetchMarketData();
+    document.title = "MonkeyTrade - Markets"
   }, []);
 
   if (marketMovers.loading) return <div className="h-64 flex items-center justify-center"><Loader2 className="animate-spin text-orange-500" /></div>;
