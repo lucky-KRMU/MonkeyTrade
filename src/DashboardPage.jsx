@@ -1,12 +1,47 @@
 import React, { useState } from 'react';
-import { Sparkles, ArrowUpRight, PlusCircle } from 'lucide-react';
+import { Sparkles, ArrowUpRight, PlusCircle, Activity } from 'lucide-react';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 
+// --- Mock Data ---
 const holdingsData = [
   { symbol: 'AAPL', shares: 50, avgCost: 150.00, currentPrice: 175.24, pl: 1262.00 },
   { symbol: 'TSLA', shares: 20, avgCost: 250.00, currentPrice: 238.45, pl: -231.00 },
   { symbol: 'NVDA', shares: 10, avgCost: 400.00, currentPrice: 485.30, pl: 853.00 },
 ];
 
+const chartData = [
+  { name: 'Jan', value: 110000 },
+  { name: 'Feb', value: 115000 },
+  { name: 'Mar', value: 112000 },
+  { name: 'Apr', value: 124500 },
+];
+
+// --- Sub-Component: Chart ---
+const PerformanceChart = () => (
+  <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-[300px]">
+    <h3 className="font-bold text-slate-800 dark:text-white mb-4">Portfolio Growth</h3>
+    <ResponsiveContainer width="100%" height="90%">
+      <LineChart data={chartData}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+        <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+        <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val/1000}k`} />
+        <Tooltip 
+          contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
+        />
+        <Line 
+          type="monotone" 
+          dataKey="value" 
+          stroke="#f97316" 
+          strokeWidth={3} 
+          dot={{ r: 4, fill: '#f97316' }} 
+          activeDot={{ r: 6 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  </div>
+);
+
+// --- Main Page Component ---
 export default function DashboardPage() {
   const [autoRebalance, setAutoRebalance] = useState(false);
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
@@ -39,9 +74,11 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 2. Holdings Table & AI Insights */}
+      {/* 2. Chart Section */}
+      <PerformanceChart />
+
+      {/* 3. Holdings Table & AI Insights */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Holdings Table */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-bold text-slate-800 dark:text-white">Your Holdings</h3>
@@ -76,7 +113,6 @@ export default function DashboardPage() {
           </table>
         </div>
 
-        {/* AI Insights Widget */}
         <div className="bg-slate-900 dark:bg-slate-800 p-6 rounded-xl text-white shadow-lg border border-slate-800 dark:border-slate-700">
           <div className="flex items-center gap-2 text-orange-400 mb-4">
             <Sparkles size={20} />
@@ -90,8 +126,8 @@ export default function DashboardPage() {
           </button>
         </div>
       </div>
-
-      {/* 3. Simple Trade Modal */}
+      
+      {/* 4. Trade Modal */}
       {isTradeModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-900 p-8 rounded-xl w-full max-w-sm shadow-xl border border-slate-200 dark:border-slate-800">
