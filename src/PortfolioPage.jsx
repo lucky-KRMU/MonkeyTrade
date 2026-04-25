@@ -1,17 +1,17 @@
 import React from 'react';
 import { PieChart, Briefcase, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
-const portfolioData = {
-  totalEquity: 124500.20,
-  dayGain: 1240.50,
-  dayGainPercent: 1.01,
-  totalReturn: 14500.00,
-  allocation: [
-    { sector: 'Technology', percentage: 65, color: 'bg-orange-500' },
-    { sector: 'Energy', percentage: 20, color: 'bg-green-500' },
-    { sector: 'Finance', percentage: 15, color: 'bg-slate-600' },
-  ]
-};
+// const portfolioData = {
+//   totalEquity: 124500.20,
+//   dayGain: 1240.50,
+//   dayGainPercent: 1.01,
+//   totalReturn: 14500.00,
+//   allocation: [
+//     { sector: 'Technology', percentage: 65, color: 'bg-orange-500' },
+//     { sector: 'Energy', percentage: 20, color: 'bg-green-500' },
+//     { sector: 'Finance', percentage: 15, color: 'bg-slate-600' },
+//   ]
+// };
 
 const holdings = [
   { symbol: 'AAPL', shares: 50, marketValue: 8762.00, gain: 1262.00 },

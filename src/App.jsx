@@ -7,6 +7,7 @@ import OrdersPage from './OrdersPage';
 import MarketsPage from './MarketsPage';
 import SettingsPage from './SettingsPage';
 import { ThemeProvider } from './ThemeContext';
+import  ErrorBoundary  from './ErrorBoundry';
 
 // function App() {
 //   return (
@@ -41,12 +42,12 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<DashboardLayout />}>
-              <Route index element={<DashboardPage />} />
-              <Route path="portfolio" element={<PortfolioPage />} />
-              <Route path="watchlist" element={<WatchlistPage />} />
-              <Route path="markets" element={<MarketsPage />} />
-              <Route path="orders" element={<OrdersPage />} />
-              <Route path='settings' element={<SettingsPage />} />
+              <Route index element={<DashboardPage />} errorElement={<ErrorBoundary />} />
+              <Route path="portfolio" element={<PortfolioPage />} errorElement={<ErrorBoundary />} />
+              <Route path="watchlist" element={<WatchlistPage />} errorElement={<ErrorBoundary />} />
+              <Route path="markets" element={<MarketsPage />} errorElement={<ErrorBoundary />} />
+              <Route path="orders" element={<OrdersPage />} errorElement={<ErrorBoundary />} />
+              <Route path='settings' element={<SettingsPage />} errorElement={<ErrorBoundary />} />
             </Route>
           </Routes>
         </BrowserRouter>
