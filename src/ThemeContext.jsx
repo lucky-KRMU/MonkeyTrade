@@ -1,18 +1,11 @@
-// ThemeContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+const GlobalContext = createContext();
 
-export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('light');
+export function GlobalProvider({ children }) {
+  // --- Theme State ---
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
-  // Load saved theme from localStorage on initial render
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-  }, []);
-
-  // Update DOM and LocalStorage when theme changes
   useEffect(() => {
     if (theme === 'dark') {
       window.document.documentElement.classList.add('dark');
@@ -23,19 +16,50 @@ export function ThemeProvider({ children }) {
     }
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((prev) => {
-      const newTheme = prev === 'light' ? 'dark' : 'light';
-      console.log("Theme switched to:", newTheme); // Check your browser console
-      return newTheme;
-    });
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+
+  // --- API/Caching State ---
+  const [holdings, setHoldings] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [lastFetched, setLastFetched] = useState(null);
+
+  const CACHE_DURATION = 300000; // 5 minutes in milliseconds
+
+  const fetchHoldings = async () => {
+    // Cache check
+    if (lastFetched && Date.now() - lastFetched < CACHE_DURATION) {
+      console.log("Using cached data (API call skipped).");
+      return;
+    }
+
+    setLoading(true);
+    const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
+    
+    try {
+      const symbols = ['AAPL', 'TSLA', 'NVDA'];
+      const results = await Promise.all(
+        symbols.map(async (s) => {
+          const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
+          const data = await res.json();
+          // Adding static mock data for calculation
+          return { symbol: s, currentPrice: data.c || 0, avgCost: 150, shares: 10, pl: ((data.c || 0) - 150) * 10 };
+        })
+      );
+      
+      setHoldings(results);
+      setLastFetched(Date.now());
+    } catch (err) {
+      console.error("API Fetch Error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <GlobalContext.Provider value={{ theme, toggleTheme, holdings, loading, fetchHoldings }}>
       {children}
-    </ThemeContext.Provider>
+    </GlobalContext.Provider>
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useGlobalContext = () => useContext(GlobalContext);
