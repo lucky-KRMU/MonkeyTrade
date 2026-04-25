@@ -21,7 +21,7 @@ const holdings = [
 
 export default function PortfolioPage() {
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in duration-500 font-[Inter]">
       {/* 1. Portfolio Header */}
       <div className="flex justify-between items-end">
         <div>

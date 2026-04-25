@@ -15,7 +15,7 @@ const losers = [
 
 export default function MarketsPage() {
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in duration-500 font-[Inter]">
       <div>
         <h2 className="text-2xl font-bold text-slate-800">Markets</h2>
         <p className="text-slate-500">Global market overview and top movers</p>
