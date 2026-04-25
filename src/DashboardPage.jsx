@@ -12,7 +12,7 @@ export default function DashboardPage() {
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
 
   return (
-    <div className="p-6 space-y-6 animate-in fade-in duration-500">
+    <div className="p-6 space-y-6 animate-in fade-in duration-500 font-[Inter]">
       {/* 1. Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
