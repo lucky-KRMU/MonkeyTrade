@@ -15,10 +15,10 @@ export function ThemeProvider({ children }) {
   // Update DOM and LocalStorage when theme changes
   useEffect(() => {
     if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+      window.document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      window.document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
   }, [theme]);

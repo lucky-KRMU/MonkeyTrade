@@ -1,12 +1,27 @@
-
-/* Add this to ensure the whole page background shifts color */
-@layer base {
-  body {
-    @apply bg-white text-slate-900 transition-colors duration-300;
-  }
-  .dark body {
-    @apply bg-slate-950 text-slate-100;
-  }
-}
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-rubik: "Rubik", sans-serif;
+}
+
+/* Explicitly tell v4 how to handle the .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* Set the default background and text on the html element itself */
+  html {
+    @apply bg-white text-slate-900 transition-colors duration-300;
+  }
+
+  /* Force the background change when the .dark class is present */
+  html.dark {
+    @apply bg-slate-950 text-slate-100;
+  }
+  
+  /* Ensure the body inherits it */
+  body {
+    @apply bg-transparent text-inherit;
+  }
+}
