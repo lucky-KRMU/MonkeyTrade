@@ -10,6 +10,7 @@ import SettingsPage from './SettingsPage';
 import { GlobalProvider } from './ThemeContext'; 
 import ErrorFallback from './ErrorBoundry';
 import { ErrorBoundary } from 'react-error-boundary';
+import NotFoundPage from './NotFound';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="markets" element={<MarketsPage />} errorElement={<ErrorFallback />} />
                 <Route path="orders" element={<OrdersPage />} errorElement={<ErrorFallback />} />
                 <Route path='settings' element={<SettingsPage />} errorElement={<ErrorFallback />} />
+                <Route path='*' element={<NotFoundPage/>} errorElement={<ErrorFallback/>}/>
               </Route>
             </Routes>
           </BrowserRouter>
