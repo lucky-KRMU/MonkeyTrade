@@ -3,6 +3,7 @@ import DashboardLayout from './DashboardLayout';
 import DashboardPage from './DashboardPage'; // Your existing component
 import PortfolioPage from './PortfolioPage';
 import WatchlistPage from './WatchlistPage';
+import OrdersPage from './OrdersPage';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <Route path="portfolio" element={<PortfolioPage />} />
           <Route path="watchlist" element={<WatchlistPage />} />
           <Route path="markets" element={<div>Markets Page Coming Soon</div>} />
-          <Route path="orders" element={<div>Markets Page Coming Soon</div>} />
+          <Route path="orders" element={<OrdersPage/>} />
         </Route>
       </Routes>
     </BrowserRouter>
