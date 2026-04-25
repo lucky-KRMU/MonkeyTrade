@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './DashboardLayout';
 import DashboardPage from './DashboardPage'; // Your existing component
 import PortfolioPage from './PortfolioPage';
+import WatchlistPage from './WatchlistPage';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           {/* This renders inside the <Outlet /> in DashboardLayout */}
           <Route index element={<DashboardPage />} />
           <Route path="portfolio" element={<PortfolioPage />} />
-          <Route path="watchlist" element={<div>Markets Page Coming Soon</div>} />
+          <Route path="watchlist" element={<WatchlistPage />} />
           <Route path="markets" element={<div>Markets Page Coming Soon</div>} />
           <Route path="orders" element={<div>Markets Page Coming Soon</div>} />
         </Route>
