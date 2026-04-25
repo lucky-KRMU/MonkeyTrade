@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, ArrowUpRight, PlusCircle, Loader2 } from 'lucide-react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { ArrowUpRight, PlusCircle, Loader2 } from 'lucide-react';
 
 // --- Configuration ---
-// const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
-const SYMBOLS = ['AAPL', 'TSLA', 'NVDA'];
+const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
 
 // Static holding data used as the "base" to calculate P/L
 const userHoldings = [
@@ -16,14 +14,13 @@ const userHoldings = [
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [holdings, setHoldings] = useState([]);
-  const [chartData, setChartData] = useState([]);
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // 1. Fetch Quotes for all symbols
+        // Fetch Quotes for all symbols
         const holdingsPromises = userHoldings.map(async (h) => {
           const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${h.symbol}&token=${API_KEY}`);
           const data = await res.json();
@@ -34,29 +31,7 @@ export default function DashboardPage() {
           };
         });
 
-        // 2. Fetch Chart Data (Last 30 days)
-        const to = Math.floor(Date.now() / 1000);
-        const from = to - (30 * 24 * 60 * 60);
-        const chartRes = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=AAPL&resolution=D&from=${from}&to=${to}&token=${API_KEY}`);
-        const cData = await chartRes.json();
-        // --- ADD THIS LINE ---
-        console.log("Finnhub Raw Chart Data:", cData);
-        // ---------------------
-
-        if (cData.s === 'ok') {
-          // Your processing logic...
-        } else {
-          console.error("Finnhub returned:", cData.s);
-        }
-
-        // Transform chart data
-        const formattedChart = cData.t?.map((timestamp, index) => ({
-          name: new Date(timestamp * 1000).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
-          value: cData.c[index] * 100 // Mock portfolio growth based on AAPL trend
-        })) || [];
-
         setHoldings(await Promise.all(holdingsPromises));
-        setChartData(formattedChart);
       } catch (err) {
         console.error("Error fetching Finnhub data:", err);
       } finally {
@@ -91,21 +66,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 2. Chart Section */}
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm h-75">
-        <h3 className="font-bold text-slate-800 dark:text-white mb-4">Portfolio Growth (AAPL Trend)</h3>
-        <ResponsiveContainer width="100%" height="90%">
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-            <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
-            <YAxis stroke="#94a3b8" fontSize={12} tickFormatter={(val) => `$${val / 1000}k`} />
-            <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }} />
-            <Line type="monotone" dataKey="value" stroke="#f97316" strokeWidth={3} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* 3. Holdings Table */}
+      {/* 2. Holdings Table */}
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-slate-800 dark:text-white">Your Holdings</h3>
@@ -136,8 +97,8 @@ export default function DashboardPage() {
           </tbody>
         </table>
       </div>
-
-      {/* 4. Trade Modal */}
+      
+      {/* 3. Trade Modal */}
       {isTradeModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-xl w-full max-w-sm">
