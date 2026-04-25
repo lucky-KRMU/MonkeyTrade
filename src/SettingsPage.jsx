@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Shield, Bell, Moon, Save, Mail, Lock } from 'lucide-react';
-import { useTheme } from './ThemeContext'; // Ensure this matches your file path
+import { useGlobalContext } from './ThemeContext'; // Ensure this matches your file path
 
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();

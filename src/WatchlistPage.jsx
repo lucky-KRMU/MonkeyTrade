@@ -1,26 +1,15 @@
 import React, { useState } from 'react';
 import { Trash2, Plus, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-
-const initialWatchlist = [
-  { symbol: 'AAPL', price: 175.24, change: 0.72 },
-  { symbol: 'TSLA', price: 238.45, change: -0.96 },
-  { symbol: 'NVDA', price: 485.30, change: 1.07 },
-  { symbol: 'AMD', price: 165.20, change: 1.45 },
-  { symbol: 'MSFT', price: 402.10, change: 0.25 },
-];
+import { useGlobalContext } from './ThemeContext';
 
 export default function WatchlistPage() {
-  const [watchlist, setWatchlist] = useState(initialWatchlist);
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useGlobalContext();
   const [newTicker, setNewTicker] = useState('');
 
-  const removeStock = (symbol) => {
-    setWatchlist(watchlist.filter((stock) => stock.symbol !== symbol));
-  };
-
-  const addStock = (e) => {
+  const handleAdd = (e) => {
     e.preventDefault();
-    if (newTicker && !watchlist.find(s => s.symbol === newTicker.toUpperCase())) {
-      setWatchlist([...watchlist, { symbol: newTicker.toUpperCase(), price: 0.00, change: 0 }]);
+    if (newTicker) {
+      addToWatchlist(newTicker);
       setNewTicker('');
     }
   };
@@ -30,11 +19,10 @@ export default function WatchlistPage() {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Watchlist</h2>
-          <p className="text-slate-500 dark:text-slate-400">Monitor your favorite assets in real-time</p>
+          <p className="text-slate-500 dark:text-slate-400">Monitor your favorite assets</p>
         </div>
         
-        {/* Add Stock Form */}
-        <form onSubmit={addStock} className="flex gap-2">
+        <form onSubmit={handleAdd} className="flex gap-2">
           <input 
             type="text" 
             placeholder="Add ticker..."
@@ -48,7 +36,6 @@ export default function WatchlistPage() {
         </form>
       </div>
 
-      {/* Watchlist Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
         <table className="w-full text-left">
           <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800">
@@ -70,7 +57,7 @@ export default function WatchlistPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <button 
-                    onClick={() => removeStock(stock.symbol)}
+                    onClick={() => removeFromWatchlist(stock.symbol)}
                     className="text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition"
                   >
                     <Trash2 size={18} />
