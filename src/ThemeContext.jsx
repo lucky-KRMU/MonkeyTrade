@@ -21,12 +21,8 @@ export function GlobalProvider({ children }) {
   // --- 2. Holdings (Portfolio) State ---
   const [holdings, setHoldings] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [lastFetched, setLastFetched] = useState(null);
-  const CACHE_DURATION = 300000; // 5 minutes
 
   const fetchHoldings = async () => {
-    if (lastFetched && Date.now() - lastFetched < CACHE_DURATION) return;
-
     setLoading(true);
     try {
       const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
@@ -39,8 +35,7 @@ export function GlobalProvider({ children }) {
         })
       );
       setHoldings(results);
-      setLastFetched(Date.now());
-    } catch (err) { console.error("API Fetch Error:", err); } 
+    } catch (err) { console.error("API Error:", err); } 
     finally { setLoading(false); }
   };
 
@@ -48,7 +43,7 @@ export function GlobalProvider({ children }) {
   const [marketMovers, setMarketMovers] = useState({ gainers: [], losers: [], loading: false });
 
   const fetchMarketData = async () => {
-    if (marketMovers.gainers.length > 0) return; // Basic cache
+    if (marketMovers.gainers.length > 0) return;
     setMarketMovers(prev => ({ ...prev, loading: true }));
     try {
       const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
@@ -62,24 +57,26 @@ export function GlobalProvider({ children }) {
     } catch (err) { console.error(err); }
   };
 
-  // --- 4. Watchlist State ---
-  const [watchlist, setWatchlist] = useState(() => {
-    const saved = localStorage.getItem('userWatchlist');
-    return saved ? JSON.parse(saved) : [{ symbol: 'AAPL', price: 175.24, change: 0.72 }];
-  });
+  // --- 4. Watchlist State (with Load More) ---
+  const [tickerList] = useState(['AAPL', 'TSLA', 'NVDA', 'AMD', 'MSFT', 'META', 'GOOGL', 'AMZN']);
+  const [visibleWatchlist, setVisibleWatchlist] = useState([]);
 
-  useEffect(() => {
-    localStorage.setItem('userWatchlist', JSON.stringify(watchlist));
-  }, [watchlist]);
+  const loadMore = async () => {
+    const currentCount = visibleWatchlist.length;
+    const nextBatch = tickerList.slice(currentCount, currentCount + 3);
+    if (nextBatch.length === 0) return;
 
-  const addToWatchlist = (symbol) => {
-    if (!watchlist.find(s => s.symbol === symbol.toUpperCase())) {
-      setWatchlist(prev => [...prev, { symbol: symbol.toUpperCase(), price: 0, change: 0 }]);
-    }
-  };
-
-  const removeFromWatchlist = (symbol) => {
-    setWatchlist(prev => prev.filter(s => s.symbol !== symbol));
+    const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
+    try {
+      const newStocks = await Promise.all(
+        nextBatch.map(async (s) => {
+          const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
+          const data = await res.json();
+          return { symbol: s, price: data.c || 0, change: data.d || 0 };
+        })
+      );
+      setVisibleWatchlist(prev => [...prev, ...newStocks]);
+    } catch (err) { console.error("Error loading more:", err); }
   };
 
   return (
@@ -87,11 +84,19 @@ export function GlobalProvider({ children }) {
       theme, toggleTheme, 
       holdings, loading, fetchHoldings,
       marketMovers, fetchMarketData,
-      watchlist, addToWatchlist, removeFromWatchlist
+      visibleWatchlist, loadMore, hasMore: visibleWatchlist.length < tickerList.length
     }}>
       {children}
     </GlobalContext.Provider>
   );
 }
 
+// --- Hooks ---
 export const useGlobalContext = () => useContext(GlobalContext);
+
+// --- Bridge: Fixes your "useTheme export" error ---
+export const useTheme = () => {
+  const context = useContext(GlobalContext);
+  if (!context) throw new Error('useTheme must be used within a GlobalProvider');
+  return { theme: context.theme, toggleTheme: context.toggleTheme };
+};
