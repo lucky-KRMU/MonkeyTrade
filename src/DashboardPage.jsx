@@ -42,9 +42,9 @@ export default function DashboardPage() {
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <div className="flex justify-between items-center mb-4">
           <h3 className="font-bold text-slate-800 dark:text-white">Your Holdings</h3>
-          <button onClick={() => setIsTradeModalOpen(true)} className="text-orange-600 font-medium flex items-center gap-1">
+          {/* <button onClick={() => setIsTradeModalOpen(true)} className="text-orange-600 font-medium flex items-center gap-1">
             <PlusCircle size={16} /> Place Trade
-          </button>
+          </button> */}
         </div>
         <table className="w-full text-left">
           <thead>
