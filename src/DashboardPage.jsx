@@ -1,48 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowUpRight, PlusCircle, Loader2 } from 'lucide-react';
-
-// --- Configuration ---
-const API_KEY = import.meta.env.VITE_FINNHUB_KEY;
-
-// Static holding data used as the "base" to calculate P/L
-const userHoldings = [
-  { symbol: 'AAPL', shares: 50, avgCost: 150.00 },
-  { symbol: 'TSLA', shares: 20, avgCost: 250.00 },
-  { symbol: 'NVDA', shares: 10, avgCost: 400.00 },
-];
+import { useGlobalContext } from './ThemeContext'; // Adjust path if needed
 
 export default function DashboardPage() {
-  const [loading, setLoading] = useState(true);
-  const [holdings, setHoldings] = useState([]);
+  // Pulling state and functions from the Global Context
+  const { holdings, loading, fetchHoldings } = useGlobalContext();
   const [isTradeModalOpen, setIsTradeModalOpen] = useState(false);
 
+  // Trigger the fetch only on mount.
+  // The context handles the "5-minute cache" logic internally.
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // Fetch Quotes for all symbols
-        const holdingsPromises = userHoldings.map(async (h) => {
-          const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${h.symbol}&token=${API_KEY}`);
-          const data = await res.json();
-          return {
-            ...h,
-            currentPrice: data.c,
-            pl: (data.c - h.avgCost) * h.shares
-          };
-        });
-
-        setHoldings(await Promise.all(holdingsPromises));
-      } catch (err) {
-        console.error("Error fetching Finnhub data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    fetchHoldings();
   }, []);
 
-  if (loading) return (
+  // Show global loading state
+  if (loading && holdings.length === 0) return (
     <div className="h-screen flex items-center justify-center">
       <Loader2 className="animate-spin text-orange-500" size={48} />
     </div>
