@@ -24,7 +24,11 @@ export function ThemeProvider({ children }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme((prev) => {
+      const newTheme = prev === 'light' ? 'dark' : 'light';
+      console.log("Theme switched to:", newTheme); // Check your browser console
+      return newTheme;
+    });
   };
 
   return (
